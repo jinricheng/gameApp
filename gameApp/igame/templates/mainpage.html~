@@ -4,6 +4,19 @@
 	</head>
 	<body>
 	<h1>{{ pagetitle }}</h1>
-		<p>{{ contentbody }}</p>
+		{% if user.username %}
+			<p>Welcome User:{{ user.username }}.</p>
+			<li>
+			<a href ="/{{game}}/">SerchGame</a>
+			</li>
+			<li>
+			<a href ="/{{shop}}/">SerchGameShop</a>
+			</li>
+			<li>
+			<a href ="/{{producer}}/">SerchGameProducer</a>
+			</li>
+		{% else %}
+			<p>Authentication needed. Log in <a href="/login/">sign in</a> to start your search.</p>
+		{% endif %}
 	</body>
 </html>

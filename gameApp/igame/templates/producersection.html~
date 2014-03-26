@@ -1,0 +1,19 @@
+<html>
+	<head>
+	<title>GameProducer</title>
+	</head>
+	<body>
+	<h1>All GamesProducer</h1>
+	{% if producers %}
+	<ul>
+	{% for producer in producers %}
+	<li>
+	{{producer.name}}
+	</li>
+	{% endfor %}
+	</ul>
+	{% else %}
+	<p>No Producer Found.</p>
+	{% endif %}
+</body>
+</html>

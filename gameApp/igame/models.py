@@ -12,7 +12,7 @@ class Shop(models.Model):
 	name =  models.CharField(max_length = 20)
 	address = models.TextField(max_length = 300)
 	def __unicode__(self):
-		return self.name 	
+		return self.name	
 
 class Game(models.Model):
 	name = models.CharField(max_length = 20)
@@ -22,7 +22,7 @@ class Game(models.Model):
 	producedBy = models.ForeignKey(Producer)
 	soldBy = models.ForeignKey(Shop)
 	def __unicode__(self):
-		return self.name 	
+		return self.name+"    Year:"+str(self.publishYear)
 
 
 

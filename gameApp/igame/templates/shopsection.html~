@@ -1,0 +1,19 @@
+<html>
+	<head>
+	<title>Shops</title>
+	</head>
+	<body>
+	<h1>All ShopsOfGame</h1>
+	{% if shops %}
+	<ul>
+	{% for shop in shops %}
+	<li>
+	<a href = "/{{shop.name}}">{{shop.name}}</a>
+	</li>
+	{% endfor %}
+	</ul>
+	{% else %}
+	<p>No Shops.</p>
+	{% endif %}
+</body>
+</html>

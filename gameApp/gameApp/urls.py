@@ -14,5 +14,10 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^login/$', 'django.contrib.auth.views.login'),	
+    url(r'^login/$', 'django.contrib.auth.views.login'), 
+    url('^shop/$',shopsection,name='shop'),	
+    url('^producer/$',producersection,name='producer'),
+    url('^game/$',gamesection,name='Game'),	
+    url('^shop/(\w+)/$',shopGame,name='gameshop'),	
+    url('^game/(\w+)/$',gameDetail,name='gamedetail'),
 )
