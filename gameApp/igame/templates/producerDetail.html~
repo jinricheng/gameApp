@@ -1,0 +1,19 @@
+<html>
+	<head>
+	<title>{{producer.name}}</title>
+	</head>
+	<body>
+	<h1>{{producer.name}} Details</h1>
+	<p>Name ProducerCompany:{{producer.name}}<br/>   
+	<br/>Address:{{producer.address}}<br/>
+	<br/>NIF:{{producer.nif}}</p>
+	<br/></p>List of Games that produce this company</p>
+	<ul>
+	{% for game in games %}
+	<li>
+	<a href = "/game/{{game.name}}">{{game.name}}</a>
+	</li>
+	{% endfor %}
+	</ul>
+</body>
+</html>
