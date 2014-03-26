@@ -65,20 +65,30 @@ def producersection(request):
 	output = template.render(variables)
 	return HttpResponse(output)
 
-def shopGame(request,shopname):
+
+def shopDetail(request,shopname):
 	try:
         	shop = Shop.objects.get(name=shopname)
 		
 	except:
 		raise Http404('shop Not Found')
-
-	return render_to_response('shopGame.html',{'shop':shop,})
+	games = shop.game_set.all()
+	return render_to_response('shopGame.html',{'shop':shop,'games':games})
 
 
 def gameDetail(request,gamename):
 	try:
-		game = Game.objects.get(name = shopname)
+		game = Game.objects.get(name = gamename)
+	except:
+		raise Http404('Game Not Found')
+	shops = game.soldBy.all()
+	return render_to_response('gameDetail.html',{'game':game,'shops':shops,})
+
+def producerDetail(request,producername):
+	try:
+        	producer = Producer.objects.get(name=producername)
+		
 	except:
 		raise Http404('shop Not Found')
-
-	return render_to_response('gameDetail.html',{'game':game,})
+	games = producer.game_set.all()
+	return render_to_response('producerDetail.html',{'producer':producer,'games':games})

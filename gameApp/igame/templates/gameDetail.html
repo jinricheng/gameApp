@@ -1,9 +1,20 @@
 <html>
 	<head>
-	<title>GAME shop</title>
+	<title>{{game.name}}</title>
 	</head>
 	<body>
-	<h1>Welcome to GAME</h1>
-	<p>{{game.name}}---PublishYear:{{game.publishYear}}---Genre:{{game.genre}}----Description:{{game.description}}</p>
+	<h1>{{game.name}} Details</h1>
+	<p>Name Game:{{game.name}}<br/>   
+	<br/>PublishYear:{{game.publishYear}}<br/>
+	<br/>Genre:{{game.genre}}<br/>      
+	</p>Description:{{game.description}}</p>
+	<br/></p>List of Shops Where you can buy this Game</p>
+	<ul>
+	{% for shop in shops %}
+	<li>
+	<a href = "/shop/{{shop.name}}">{{shop.name}}</a>
+	</li>
+	{% endfor %}
+	</ul>
 </body>
 </html>

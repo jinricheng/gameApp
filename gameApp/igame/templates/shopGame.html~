@@ -3,7 +3,8 @@
 	<title>GAME shop</title>
 	</head>
 	<body>
-	<h1>Welcome to GAME</h1>
-	<p>{{shop.name}}</p>
+	<h1>Welcome to {{shop.name}}</h1>
+	<p>NameShop:{{shop.name}}<br/>
+	<br/>Address:{{shop.address}}</p>
 </body>
 </html>

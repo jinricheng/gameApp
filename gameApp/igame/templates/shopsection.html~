@@ -8,7 +8,7 @@
 	<ul>
 	{% for shop in shops %}
 	<li>
-	<a href = "/{{shop.name}}">{{shop.name}}</a>
+	<a href = "/shop/{{shop.name}}">{{shop.name}}</a>
 	</li>
 	{% endfor %}
 	</ul>

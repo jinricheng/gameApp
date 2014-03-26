@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url('^shop/$',shopsection,name='shop'),	
     url('^producer/$',producersection,name='producer'),
     url('^game/$',gamesection,name='Game'),	
-    url('^shop/(\w+)/$',shopGame,name='gameshop'),	
-    
+    url('^shop/(\w+)/$',shopDetail,name='shopdetail'),	
+    url('^game/(\w+)/$',gameDetail,name='gamedetail'),
+   # url('^producer/(\w+)/$',producerDetail,name='producerDetail'),
 )

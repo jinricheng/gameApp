@@ -3,7 +3,7 @@
 	<title>GameProducer</title>
 	</head>
 	<body>
-	<h1>All GamesProducer</h1>
+	<h1>All Games Producer</h1>
 	{% if producers %}
 	<ul>
 	{% for producer in producers %}
