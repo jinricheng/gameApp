@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Games>
+	{% for game in games%}
+	<Game>
+	<Name>{{game.name}}</Name>
+	</Game>
+	{% endfor %}
+</Games>

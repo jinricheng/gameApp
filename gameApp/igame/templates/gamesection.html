@@ -6,7 +6,11 @@
 	<h1>All Games</h1>
 	{% if games %}
 	<ul>
-	{{games}}
+	{% for game in games %}
+	<li>
+	<a href = "/game/{{game.id}}">{{game.name}}</a>
+	</li>
+	{% endfor %}
 	</ul>
 	{% else %}
 	<p>No Games.</p>
