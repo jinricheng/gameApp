@@ -4,7 +4,8 @@ from django.shortcuts import render_to_response
 from django.template import Context
 from django.template.loader import get_template
 from igame.models import Game,Shop,Producer
-
+import json
+from django.utils import simplejson
 
 def mainpage(request):
 	
@@ -24,7 +25,6 @@ def mainpage(request):
 
 
 def gamesection(request):
-	'''tipu'''
 	try:
 		games = Game.objects.all()
 	except:
@@ -38,6 +38,18 @@ def gamesection(request):
 	return HttpResponse(output)
 	'''return HttpResponse(output,mimetype=application/xml)'''
 
+def gamesection_JsonXml(request,types):
+	try:
+		games = Game.objects.all()
+		if types == 'json':
+			list_games = []
+		for game in games:
+			g = {"id":game.id,"name":game.name}
+			list_games.append(g)
+			games = {"All Games":list_games}
+		return HttpResponse(json.dumps(games))
+	except:
+		return Http404('Game Not Found')
 
 
 def shopsection(request):	
@@ -45,6 +57,7 @@ def shopsection(request):
 		shops = Shop.objects.all()
 	except:
 		raise Http404('shopsection not found.')
+
 	template = get_template('shopsection.html')
 	variables = Context({
 		'shops':shops,
@@ -53,6 +66,18 @@ def shopsection(request):
 	output = template.render(variables)
 	return HttpResponse(output)
 
+def shopsection_JsonXml(request,types):
+	try:
+		shops = Shop.objects.all()
+		if types == 'json':
+			list_shops = []
+		for shop in shops:
+			g = {"id":shop.id,"name":shop.name}
+			list_shops.append(g)
+			shops = {"All Shops":list_shops}
+		return HttpResponse(json.dumps(shops))
+	except:
+		return Http404('Shop Not Found')
 
 def producersection(request):
 	try:
@@ -67,6 +92,19 @@ def producersection(request):
 	output = template.render(variables)
 	return HttpResponse(output)
 
+
+def producersection_JsonXml(request,types):
+	try:
+		producers = Producer.objects.all()
+		if types == 'json':
+			list_producers = []
+		for producer in producers:
+			g = {"id":producer.id,"name":producer.name}
+			list_producers.append(g)
+			producers = {"All Producers":list_producers}
+		return HttpResponse(json.dumps(producers))
+	except:
+		return Http404('No producers Found')
 
 def shopDetail(request,shopid):
 	try:
@@ -96,3 +134,5 @@ def producerDetail(request,producerid):
 		raise Http404('shop Not Found')
 	games = producer.game_set.all()
 	return render_to_response('producerDetail.html',{'producer':producer,'games':games})
+
+

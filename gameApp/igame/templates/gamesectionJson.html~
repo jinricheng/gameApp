@@ -1,0 +1,17 @@
+<html>
+	<head>
+	<title>All Games</title>
+	</head>
+<body>
+	<h1>Games</h1>
+	{% if games%}
+	{{games}}
+	{% else %}
+	<p>No hi ha games.</p>
+	{% endif %}
+	
+</body>	
+</html>
+
+
+
