@@ -135,7 +135,8 @@ def shopDetail(request,shopid):
 	except:
 		raise Http404('shop Not Found')
 	games = shop.game_set.all()
-	return render_to_response('shopDetail.html',{'shop':shop,'games':games})
+	
+	return render_to_response('shopDetail.html',{'shop':shop,'games':games,'url':request.path})
 
 def shopDetail_JsonXml(request,types,shopid):
 	try:
@@ -199,7 +200,7 @@ def producerDetail_JsonXml(request,types,producerid):
 			return HttpResponse(json.dumps(g))
 		elif types == 'xml':
 			variables = Context({
-						'prodycer':producer
+						'producer':producer
 					})
 			load = loader.get_template('producerDetail.xml')
 			context = Context(variables)

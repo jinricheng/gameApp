@@ -9,7 +9,7 @@
 	<br/>Genre:{{game.genre}}<br/>     
 	<br/>Valoration:{{game.valoration}}<br/>  
 	<br/>Price:{{game.price}}Euros<br/>
-	<br/>Producer:{{}}<br/>     
+	<br/>Producer:{{producer.name}}<br/>     
 	</p>Description:{{game.description}}</p>
 	<br/></p>List of Shops Where you can buy this Game</p>
 	<ul>
@@ -19,5 +19,6 @@
 	</li>
 	{% endfor %}
 	</ul>
+	<p><a href = "/" > MenuPrincipal</a></p>
 </body>
 </html>

@@ -135,7 +135,8 @@ def shopDetail(request,shopid):
 	except:
 		raise Http404('shop Not Found')
 	games = shop.game_set.all()
-	return render_to_response('shopDetail.html',{'shop':shop,'games':games})
+	
+	return render_to_response('shopDetail.html',{'shop':shop,'games':games,})
 
 def shopDetail_JsonXml(request,types,shopid):
 	try:
