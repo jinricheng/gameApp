@@ -3,7 +3,7 @@
 	<title>Shops</title>
 	</head>
 	<body>
-	<h1>All ShopsOfGame</h1>
+	<h1>All Shops Of Game</h1>
 	{% if shops %}
 	<ul>
 	{% for shop in shops %}

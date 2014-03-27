@@ -6,5 +6,13 @@
 	<h1>Welcome to {{shop.name}}</h1>
 	<p>NameShop:{{shop.name}}<br/>
 	<br/>Address:{{shop.address}}</p>
+	<br/><p>List of Games</p>
+	<ul>
+	{% for game in games %}
+	<li>
+	<a href = "/game/{{game.id}}">{{game.name}}</a>
+	</li>
+	{% endfor %}
+	</ul>
 </body>
 </html>

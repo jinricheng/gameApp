@@ -5,16 +5,11 @@
 	<body>
 	<h1>{{ pagetitle }}</h1>
 		{% if user.username %}
-			<p>Welcome User:{{ user.username }}.</p>
-			<li>
-			<a href ="/{{game}}/">SerchGame</a>
-			</li>
-			<li>
-			<a href ="/{{shop}}/">SerchGameShop</a>
-			</li>
-			<li>
-			<a href ="/{{producer}}/">SerchGameProducer</a>
-			</li>
+			<p>Welcome User:{{ user.username }}.</p><br/>
+			<p>Search Options</p>
+			<p><a href ="/{{game}}/">SerchGame</a><br/>
+			<br/><a href ="/{{shop}}/">SerchGameShop</a><br/>
+			<br/><a href ="/{{producer}}/">SerchGameProducer</a></p>
 		{% else %}
 			<p>Authentication needed. Log in <a href="/login/">sign in</a> to start your search.</p>
 		{% endif %}
