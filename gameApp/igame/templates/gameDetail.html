@@ -1,24 +1,35 @@
-<html>
+{% extends "mainpage.html" %}
+{% block content %}
+	{% if user.username %}
 	<head>
 	<title>{{game.name}}</title>
 	</head>
 	<body>
 	<h1>{{game.name}} Details</h1>
-	<p>Name Game:{{game.name}}<br/>   
+	<p>Game Name:{{game.name}}<br/>   
 	<br/>PublishYear:{{game.publishYear}}<br/>
 	<br/>Genre:{{game.genre}}<br/>     
-	<br/>Valoration:{{game.valoration}}<br/>  
+	<br/>GameCode:{{game.gameCode}}<br/>  
 	<br/>Price:{{game.price}}Euros<br/>
-	<br/>Producer:{{producer.name}}<br/>     
 	</p>Description:{{game.description}}</p>
-	<br/></p>List of Shops Where you can buy this Game</p>
+	<br/></p>Shops:</p>
 	<ul>
-	{% for shop in shops %}
+	{% for shop in game.shops.all %}
 	<li>
 	<a href = "/shop/{{shop.id}}">{{shop.name}}</a>
 	</li>
+	{% empty %}<li>Sorry,we can not find the shop!</li>
 	{% endfor %}
 	</ul>
-	<p><a href = "/" > MainPage</a></p>
-</body>
-</html>
+	</p>GameProducer:</p>
+	<ul>
+	{% for producer in game.producer.all %}
+	<li>
+	<a href = "/producer/{{producer.id}}">{{producer.name}}</a>
+	</li>
+	{% empty %}<li>Sorry,we can not find any producer of this game!.</li>
+	{% endfor %}
+	</ul>	
+	</body>
+	{% else %}<p>You must sign in to use the game application</p>{% endif %}
+{% endblock %}

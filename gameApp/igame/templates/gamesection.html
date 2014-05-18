@@ -1,19 +1,18 @@
-<html>
-	<head>
-	<title>Games</title>
-	</head>
+{% extends "mainpage.html" %}
+{% block content %}
+	{% if user.username %}
 	<body>
-	<h1>All Games</h1>
-	{% if games %}
+	<h1>Welcome to MyGames Application</h1>
+	<p> Last 5 games added by user</p>
 	<ul>
-	{% for game in games %}
+	{% for game in Game_List %}
 	<li>
-	<a href = "/game/{{game.id}}">{{game.name}}</a>
+	<a href = "/games/{{game.id}}">{{game.name}}</a>
 	</li>
+	{% empty %}<li>sorry,can not find any games</li>
 	{% endfor %}
 	</ul>
-	{% else %}
-	<p>No Games.</p>
-	{% endif %}
-</body>
-</html>
+	</body>
+	{% else %}<p>You must sign in to use the game application</p>{% endif %}
+{% endblock %}
+
