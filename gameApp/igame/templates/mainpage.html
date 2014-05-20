@@ -2,24 +2,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="{% static "style/base.css" %}" />
-<title>{% block title %}My Game Section.org{% endblock %}</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <link rel="stylesheet" href="{% static "style/base.css" %}" />
+    <title>{% block title %}MyGameApplication.org{% endblock %}</title>
 </head>
+
 <body>
 <div id="header">
-{% block header %}
-{% if user.username %}<p>Welcome {{user.username}}</p>
-{% else %}<p><a href="/login/">Sign in</a></p>{% endif %}
-{% endblock %}
+	{% block header %}
+		{% if user.username %}<h4>Welcome {{user.username}}</h4>
+		{% else %}<p><a href="/login/">Sign in</a></p>{% endif %}
+	{% endblock %}
 </div>
+
 <div id="sidebar">
-{% block sidebar %}<ul><li><a href="/">Home</a></li></ul>{% endblock %}
+	{% block sidebar %}<ul><li><a href="/igame/">Home</a></li></ul>{% endblock %}
 </div>
+
 <div id="content">
-{% block content %}
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-{% endblock %}
+	{% block content %}
+		{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+	{% endblock %}
 </div>
+
 <div id="footer">{% block footer %}{% endblock %}</div>
 </body>
 </html>

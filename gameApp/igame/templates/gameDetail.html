@@ -1,35 +1,77 @@
 {% extends "mainpage.html" %}
 {% block content %}
 	{% if user.username %}
-	<head>
-	<title>{{game.name}}</title>
-	</head>
+	<span vocab="http://schema.org/" typeof="Game">
+	<h1>
+    	<span property="name">{{ game.name }} Details</span>
+    	{% if user == game.user %}
+        [<a href="{% url 'igame:game_edit' game.id %}">edit</a>]
+	[<a href="{% url 'igame:game_delete' game.id %}">delete</a>]
+    	{% endif %}
+	</h1>
 	<body>
-	<h1>{{game.name}} Details</h1>
 	<p>Game Name:{{game.name}}<br/>   
 	<br/>PublishYear:{{game.publishYear}}<br/>
 	<br/>Genre:{{game.genre}}<br/>     
 	<br/>GameCode:{{game.gameCode}}<br/>  
 	<br/>Price:{{game.price}}Euros<br/>
 	</p>Description:{{game.description}}</p>
-	<br/></p>Shops:</p>
-	<ul>
-	{% for shop in game.shops.all %}
-	<li>
-	<a href = "/shop/{{shop.id}}">{{shop.name}}</a>
-	</li>
-	{% empty %}<li>Sorry,we can not find the shop!</li>
-	{% endfor %}
+	</p> CreatedBy User: {{game.user}}</p>
+	</p> GameProducer: <a href = "{% url 'igame:producer_detail' game.producedBy.id %}">{{game.producedBy}}</a></p>
+
+	<h2>Reviews</h2>
+	{% if game.gamereview_set.all|length > 0 %}
+	<span rel="aggregateRating">
+    	<p typeof="AggregateRating">
+        	Average rating <span property="ratingValue">{{ game.averageRating|stringformat:".1f" }}</span>
+        	{% with game.gamereview_set.all|length as reviewCount %}
+        	from <span property="reviewCount">{{ reviewCount }}</span> review{{ reviewCount|pluralize }}
+        	{% endwith %}
+    	</p>
+	</span>
+	<ul rel="review">
+    	{% for review in game.gamereview_set.all %}
+       	<li typeof="Review">
+            <p rel="reviewRating" typeof="Rating">
+                <span property="worstRating" content="{{ RATING_CHOICES.0.0 }}"></span>
+                <span property="ratingValue">{{ review.rating }}</span> star{{ review.rating|pluralize }}
+                {% with RATING_CHOICES|last as best %}
+                <span property="bestRating" content="{{ best.0 }}"></span>
+                {% endwith %}
+            </p>
+            <p property="description">{{ review.comment }}</p>
+            <p>Created by <span property="author">{{ review.user }}</span> on
+                <span property="publishDate">{{ review.date}}</span></p>
+        </li>
+    	{% endfor %}
 	</ul>
-	</p>GameProducer:</p>
+	{% else %} <p>Sorry,this game no has reviews, add one please!</p>{% endif %}
+
+	<h2>Add Review</h2>
+	<form action="{% url 'igame:review_create' game.id %}" method="post">
+    		{% csrf_token %}
+    		Message: <textarea name="comment" id="comment" rows="4"></textarea>
+    		<p>Rating:</p>
+    		<p>
+    		{% for rate in RATING_CHOICES %}
+        	<input type="radio" name="rating" id="rating{{ forloop.counter }}" value="{{ rate.1 }}" />
+       		<label for="choice{{ forloop.counter }}">{{ rate.1 }} star{{ rate.0|pluralize }}</label><br />
+    		{% endfor %}
+    		</p>
+    		<input type="submit" value="Review" />
+	</form>
+	<br/> 
+	<h3>Shops:(<a href="{% url 'igame:shop_create' %}">Add</a>)</h3>
 	<ul>
-	{% for producer in game.producer.all %}
-	<li>
-	<a href = "/producer/{{producer.id}}">{{producer.name}}</a>
-	</li>
-	{% empty %}<li>Sorry,we can not find any producer of this game!.</li>
-	{% endfor %}
-	</ul>	
+		{% for shop in game.soldBy.all %}
+			<li>
+			<a href = "{% url 'igame:shop_detail' shop.id %}">{{shop.name}}
+			</li>
+		{% empty %}<li>Sorry,we can not find the shop!</li>
+		{% endfor %}
+	</ul>
 	</body>
 	{% else %}<p>You must sign in to use the game application</p>{% endif %}
+
+	
 {% endblock %}

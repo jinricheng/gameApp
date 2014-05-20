@@ -1,19 +1,14 @@
-<html>
-	<head>
-	<title>GameProducer</title>
-	</head>
-	<body>
-	<h1>All Games Producer</h1>
-	{% if producers %}
+{% extends "mainpage.html" %}
+{% block content %}
+	<h2>All gameProducer of Application</h2> 
+	{% if user.username %}
 	<ul>
-	{% for producer in producers %}
+	{% for producer in Producer_List %}
 	<li>
-	<a href = "/producer/{{producer.id}}">{{producer.name}}</a>
+	<a href = "{% url 'igame:producer_detail' producer.id %}">{{producer.name}}</a>
 	</li>
+	{% empty %}<li>sorry,can not find any producers</li>
 	{% endfor %}
 	</ul>
-	{% else %}
-	<p>No Producer Found.</p>
 	{% endif %}
-</body>
-</html>
+{% endblock %}

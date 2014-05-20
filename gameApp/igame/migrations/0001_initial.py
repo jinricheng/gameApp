@@ -8,17 +8,18 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Producer'
-        db.create_table(u'igame_producer', (
+        # Adding model 'Game'
+        db.create_table(u'igame_game', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.TextField')()),
-            ('address', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('nif', self.gf('django.db.models.fields.CharField')(default='', max_length=10)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=20)),
+            ('publishYear', self.gf('django.db.models.fields.IntegerField')()),
+            ('genre', self.gf('django.db.models.fields.CharField')(max_length=10)),
+            ('description', self.gf('django.db.models.fields.TextField')(max_length=300)),
+            ('gameCode', self.gf('django.db.models.fields.CharField')(default='', max_length=10)),
             ('date', self.gf('django.db.models.fields.DateField')(default=datetime.date.today)),
-            ('city', self.gf('django.db.models.fields.TextField')(default=' ')),
-            ('country', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
         ))
-        db.send_create_signal(u'igame', ['Producer'])
+        db.send_create_signal(u'igame', ['Game'])
 
         # Adding model 'Shop'
         db.create_table(u'igame_shop', (
@@ -27,34 +28,26 @@ class Migration(SchemaMigration):
             ('address', self.gf('django.db.models.fields.TextField')(max_length=100)),
             ('nif', self.gf('django.db.models.fields.CharField')(default='', max_length=10)),
             ('date', self.gf('django.db.models.fields.DateField')(default=datetime.date.today)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('city', self.gf('django.db.models.fields.TextField')(default=' ')),
             ('country', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('game', self.gf('django.db.models.fields.related.ForeignKey')(related_name='shops', null=True, to=orm['igame.Game'])),
         ))
         db.send_create_signal(u'igame', ['Shop'])
 
-        # Adding model 'Game'
-        db.create_table(u'igame_game', (
+        # Adding model 'Producer'
+        db.create_table(u'igame_producer', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=20)),
-            ('publishYear', self.gf('django.db.models.fields.IntegerField')()),
-            ('genre', self.gf('django.db.models.fields.CharField')(max_length=10)),
-            ('description', self.gf('django.db.models.fields.TextField')(max_length=300)),
+            ('name', self.gf('django.db.models.fields.TextField')()),
+            ('address', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('nif', self.gf('django.db.models.fields.CharField')(default='', max_length=10)),
-            ('producedBy', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['igame.Producer'])),
             ('date', self.gf('django.db.models.fields.DateField')(default=datetime.date.today)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('city', self.gf('django.db.models.fields.TextField')(default=' ')),
             ('country', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('game', self.gf('django.db.models.fields.related.ForeignKey')(related_name='producer', null=True, to=orm['igame.Game'])),
         ))
-        db.send_create_signal(u'igame', ['Game'])
-
-        # Adding M2M table for field soldBy on 'Game'
-        m2m_table_name = db.shorten_name(u'igame_game_soldBy')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('game', models.ForeignKey(orm[u'igame.game'], null=False)),
-            ('shop', models.ForeignKey(orm[u'igame.shop'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['game_id', 'shop_id'])
+        db.send_create_signal(u'igame', ['Producer'])
 
         # Adding model 'gameReview'
         db.create_table(u'igame_gamereview', (
@@ -69,17 +62,14 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        # Deleting model 'Producer'
-        db.delete_table(u'igame_producer')
+        # Deleting model 'Game'
+        db.delete_table(u'igame_game')
 
         # Deleting model 'Shop'
         db.delete_table(u'igame_shop')
 
-        # Deleting model 'Game'
-        db.delete_table(u'igame_game')
-
-        # Removing M2M table for field soldBy on 'Game'
-        db.delete_table(db.shorten_name(u'igame_game_soldBy'))
+        # Deleting model 'Producer'
+        db.delete_table(u'igame_producer')
 
         # Deleting model 'gameReview'
         db.delete_table(u'igame_gamereview')
@@ -124,17 +114,14 @@ class Migration(SchemaMigration):
         },
         u'igame.game': {
             'Meta': {'object_name': 'Game'},
-            'city': ('django.db.models.fields.TextField', [], {'default': "' '"}),
-            'country': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'date': ('django.db.models.fields.DateField', [], {'default': 'datetime.date.today'}),
             'description': ('django.db.models.fields.TextField', [], {'max_length': '300'}),
+            'gameCode': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '10'}),
             'genre': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
-            'nif': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '10'}),
-            'producedBy': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['igame.Producer']"}),
             'publishYear': ('django.db.models.fields.IntegerField', [], {}),
-            'soldBy': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['igame.Shop']", 'symmetrical': 'False'})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
         u'igame.gamereview': {
             'Meta': {'object_name': 'gameReview'},
@@ -151,9 +138,11 @@ class Migration(SchemaMigration):
             'city': ('django.db.models.fields.TextField', [], {'default': "' '"}),
             'country': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'date': ('django.db.models.fields.DateField', [], {'default': 'datetime.date.today'}),
+            'game': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'producer'", 'null': 'True', 'to': u"orm['igame.Game']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.TextField', [], {}),
-            'nif': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '10'})
+            'nif': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '10'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
         u'igame.shop': {
             'Meta': {'object_name': 'Shop'},
@@ -161,9 +150,11 @@ class Migration(SchemaMigration):
             'city': ('django.db.models.fields.TextField', [], {'default': "' '"}),
             'country': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'date': ('django.db.models.fields.DateField', [], {'default': 'datetime.date.today'}),
+            'game': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'shops'", 'null': 'True', 'to': u"orm['igame.Game']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
-            'nif': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '10'})
+            'nif': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '10'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         }
     }
 

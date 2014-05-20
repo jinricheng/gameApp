@@ -1,19 +1,14 @@
-<html>
-	<head>
-	<title>Shops</title>
-	</head>
-	<body>
-	<h1>All Shops Of Game</h1>
-	{% if shops %}
+{% extends "mainpage.html" %}
+{% block content %}
+	<h2>All gameShops of Application</h2> 
+	{% if user.username %}
 	<ul>
-	{% for shop in shops %}
+	{% for shop in Shop_List %}
 	<li>
-	<a href = "/shop/{{shop.id}}">{{shop.name}}</a>
+	<a href = "{% url 'igame:shop_detail' shop.id %}">{{shop.name}}</a>
 	</li>
+	{% empty %}<li>sorry,can not find any shops</li>
 	{% endfor %}
 	</ul>
-	{% else %}
-	<p>No Shops.</p>
 	{% endif %}
-</body>
-</html>
+{% endblock %}

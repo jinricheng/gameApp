@@ -1,0 +1,17 @@
+{% extends "mainpage.html" %}
+{% block title %}Delete producer{% endblock %}
+
+{% block content %}
+	{% if user == producer.user %}
+	<h1>Delete producer</h1>
+	<a href="{% url 'igame:producer_detail' producer.id %}">Back to producerDetail</a>
+	<p>
+	Do you really want to delete {{ producer.name }}?
+
+	<form action="" method="post">
+	   {% csrf_token %}
+  	   <input type="submit" name="delete" value="Delete">
+	</form>
+	</p>
+	{% else %}<p>You don't have permission to delete the producer</p>{% endif %}
+{% endblock %}

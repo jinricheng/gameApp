@@ -1,20 +1,32 @@
-<html>
-	<head>
-	<title>{{producer.name}}</title>
-	</head>
+{% extends "mainpage.html" %}
+{% block content %}
+	{% if user.username %}
+	<span vocab="http://schema.org/" typeof="Producer">
+	<h1>
+    	<span property="name">{{ producer.name }} Details</span>
+    	{% if user == producer.user %}
+        [<a href="{% url 'igame:producer_edit' producer.id %}">edit</a>]
+	[<a href="{% url 'igame:producer_delete' producer.id %}">delete</a>]
+    	{% endif %}
+	</h1>
 	<body>
-	<h1>{{producer.name}} Details</h1>
-	<p>Name ProducerCompany:{{producer.name}}<br/>   
+	<p>Producer Name:{{producer.name}}<br/>   
 	<br/>Address:{{producer.address}}<br/>
-	<br/>NIF:{{producer.nif}}</p>
-	<br/></p>List of Games that produce this company</p>
+	<br/>Cif:{{producer.nif}}<br/>     
+	<br/>City:{{producer.city}}<br/>  
+	<br/>Country:{{producer.country}}<br/>
+	</p> CreatedBy: {{producer.user}}</p>
+	<br/>
+	<h3>
+	Games Produced:(<a href="{% url 'igame:game_create' %}">Add New Game</a>)</h3>
 	<ul>
-	{% for game in games %}
+	{% for game in producer.producedby.all %}
 	<li>
-	<a href = "/game/{{game.id}}">{{game.name}}</a>
+	<a href = "{% url 'igame:game_detail' game.id %}">{{game.name}}</a>
 	</li>
+	{% empty %}<li>Sorry,we can not find the shop!</li>
 	{% endfor %}
 	</ul>
-	<p><a href = "/" > MenuPrincipal</a></p>
-</body>
-</html>
+	</body>
+	{% else %}<p>You must sign in to use the game application</p>{% endif %}
+{% endblock %}

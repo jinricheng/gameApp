@@ -1,0 +1,16 @@
+{% extends "mainpage.html" %}
+{% block title %}Delete game{% endblock %}
+
+{% block content %}
+	{% if user == game.user %}
+	<h1>Delete game</h1>
+	<a href="{% url 'igame:game_detail' game.id %}">Back to game</a>
+	<p>
+	Do you really want to delete {{ game.name }}?
+
+	<form action="" method="post">
+  	   <input type="submit" name="delete" value="Delete">
+	</form>
+	</p>
+	{% else %}<p>You don't have permission to delete the game</p>{% endif %}
+{% endblock %}

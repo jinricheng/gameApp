@@ -1,19 +1,31 @@
-<html>
-	<head>
-	<title>GAME shop</title>
-	</head>
-	<body>
-	<h1>Welcome to {{shop.name}}</h1>
-	<p>NameShop:{{shop.name}}<br/>
-	<br/>Address:{{shop.address}}</p>
-	<br/><p>List of Games</p>
+{% extends "mainpage.html" %}
+{% block content %}
+	{% if user.username %}
+	<span vocab="http://schema.org/" typeof="Shop">
+	<h1>
+    	<span property="name">{{ shop.name }} Details</span>
+    	{% if user == shop.user %}
+        [<a href="{% url 'igame:shop_edit' shop.id %}">edit</a>]
+	[<a href="{% url 'igame:shop_delete' shop.id %}">delete</a>]
+    	{% endif %}
+	</h1>
+	<p>Shop Name:{{shop.name}}<br/>   
+	<br/>Cif:{{shop.cif}}<br/>
+	<br/>Address:{{shop.address}}<br/>     
+	<br/>City:{{shop.city}}<br/>  
+	<br/>Country:{{shop.country}}<br/>
+	</p> CreatedBy User: {{shop.user}}</p>
+	<br/>
+	<h3>
+	Games Avaliables:(<a href="{% url 'igame:game_create' %}">Add New Game</a>)</h3>
 	<ul>
-	{% for game in games %}
+	{% for game in shop.soldby.all %}
 	<li>
-	<a href = "/game/{{game.id}}">{{game.name}}</a>
+	<a href =  "{% url 'igame:game_detail' game.id %}">{{game.name}}</a>
 	</li>
+	{% empty %}<li>Sorry,we can not find any game in this shop!</li>
 	{% endfor %}
 	</ul>
-	<p><a href = "/" > MainPage</a></p>
-</body>
-</html>
+	</body>
+	{% else %}<p>You must sign in to use the game application</p>{% endif %}
+{% endblock %}

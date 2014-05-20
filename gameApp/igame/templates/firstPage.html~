@@ -1,0 +1,27 @@
+{% extends "mainpage.html" %}
+{% block content %}
+	{% if user.username %}
+	<body>
+	<h2>Welcome to MyGames Application</h2>
+
+	<p>Add Section:<ul><li><a href = "{% url 'igame:game_create' %}">1.Add New VideoGame</a></li></ul>
+	<ul><li><a href = "{% url 'igame:shop_section' %}">2.Add New GameShop</a></li></ul>
+	<ul><li><a href = "{% url 'igame:producer_section' %}">3.Add New GameProducer</a></li></ul></p>
+
+	<p>Service Section:<ul><li><a href = "{% url 'igame:game_section' %}">1.Search Game</a></li></ul>
+	<ul><li><a href = "{% url 'igame:shop_create' %}">2.Search Shop</a></li></ul>
+	<ul><li><a href = "{% url 'igame:producer_create' %}">3.Search Producer</a></li></ul></p>
+
+	<p> Last 5 games added by Users:</p>
+	<ul>
+	{% for game in Game_List %}
+	<li>
+	<a href = "{% url 'igame:game_detail' game.id %}">{{game.name}}</a>
+	</li>
+	{% empty %}<li>sorry,can not find any games</li>
+	{% endfor %}
+	</ul>
+
+	</body>
+	{% else %}<p>You must sign in to use the game application</p>{% endif %}
+{% endblock %}

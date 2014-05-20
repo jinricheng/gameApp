@@ -4,32 +4,21 @@ from django.core.urlresolvers import reverse
 from datetime import date
 # Create your models here.
 
-class Game(models.Model):
-	name = models.CharField(max_length = 20)
-	publishYear = models.IntegerField()
-	genre = models.CharField(max_length = 10)	
-	description = models.TextField(max_length = 300)
-	gameCode = models.CharField(max_length = 10,default="")
-	date = models.DateField(default = date.today)
-	#user = models.ForeignKey(User,default = User.objects.get(id=1))
-	def __unicode__(self):
-		return self.name
-	def get_absolute_url(self):
-		return reverse('gameDetail',kwargs={'pk':self.pk}) 
+def get_default_user():
+    	return User.objects.get(pk=1)
 
 class Shop(models.Model):
 	name =  models.CharField(max_length = 20)
 	address = models.TextField(max_length = 100)
-	nif = models.CharField(max_length = 10,default="")
+	cif = models.CharField(max_length = 10,default="")
 	date = models.DateField(default = date.today)
-	#user = models.ForeignKey(User,default = User.objects.get(id=1))
+	user = models.ForeignKey(User,default = get_default_user)
 	city = models.TextField(default=" ")
 	country = models.TextField(blank=True,null=True)
-	game = models.ForeignKey(Game,null = True, related_name = 'shops')
 	def __unicode__(self):
 		return self.name	
 	def get_absolute_url(self):
-		return reverse('shop:shop_detail',kwargs={'pk':self.pk}) 
+		return reverse('igame:shop_detail',kwargs={'pk':self.pk}) 
 
 
 class Producer(models.Model):
@@ -37,21 +26,43 @@ class Producer(models.Model):
 	address = models.TextField(blank = True, null=True)
 	nif = models.CharField(max_length = 10,default="")
 	date = models.DateField(default = date.today)
-	#user = models.ForeignKey(User,default = User.objects.get(id=1))
+	user = models.ForeignKey(User,default = get_default_user)
 	city = models.TextField(default=" ")
 	country = models.TextField(blank=True,null=True)
-	game = models.ForeignKey(Game,null = True, related_name = 'producer')
 	def __unicode__(self):
 		return u"%s" % self.name
 	def get_absolute_url(self):
-		return reverse('gameproducer:gameproducer_detail',kwargs={'pk':self.pk}) 	
+		return reverse('igame:producer_detail',kwargs={'pk':self.pk}) 	
 	
+class Game(models.Model):
+	name = models.CharField(max_length = 20)
+	publishYear = models.IntegerField()
+	genre = models.CharField(max_length = 10)	
+	description = models.TextField(max_length = 300)
+	gameCode = models.CharField(max_length = 10,default="")
+	date = models.DateField(default = date.today)
+	image = models.ImageField(upload_to="myrestaurants", blank=True, null=True)
+	price = models.IntegerField(max_length = 5, default = 0)
+	user = models.ForeignKey(User,default = get_default_user)
+	producedBy = models.ForeignKey(Producer,null = True, related_name = 'producedby')
+	soldBy = models.ManyToManyField(Shop,null = True, related_name = 'soldby')
+	def __unicode__(self):
+		return self.name
+	def get_absolute_url(self):
+		return reverse('igame:game_detail',kwargs={'pk':self.pk}) 
+	def averageRating(self):
+        	ratingSum = 0.0
+        	for review in self.gamereview_set.all():
+            		ratingSum += review.rating
+        	reviewCount = self.gamereview_set.count()
+        	return ratingSum / reviewCount
+
 
 class Review(models.Model):
-	RATING_CHOICES = ((1,'one'),(2,'two'),(3,'three'),(4,'four'),(5,'five'),(6,'six'),(7,'seven'),(8,'eight'),(9,'nine'),(10,'ten'))
+	RATING_CHOICES = ((1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5'),(6,'6'),(7,'7'),(8,'8'),(9,'9'),(10,'10'))
 	rating = models.PositiveSmallIntegerField('Rating(stars)',blank=False,default = 5,choices=RATING_CHOICES)
-	coment = models.TextField(blank = True, null = True)
-	user = models.ForeignKey(User,default = User.objects.get(id=1))
+	comment = models.TextField(blank = True, null = True)
+	user = models.ForeignKey(User,default = get_default_user)
 	date = models.DateField(default = date.today)
 
 	class Meta:
