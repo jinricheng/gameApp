@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.utils import timezone
 from django.views.generic import DetailView,ListView,UpdateView
 from igame.views import *
+from rest_framework.urlpatterns import format_suffix_patterns
 from igame.models import Shop,Game,Producer
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -31,8 +32,6 @@ urlpatterns = patterns('',
 	context_object_name='Game_List',
 	template_name='gamesection.html'),
 	name = 'game_section'),
-
-
 
     url(r'^shopsection/$',
 	ListView.as_view(
@@ -79,6 +78,10 @@ urlpatterns = patterns('',
     url(r'^shops/(?P<pk>\d+)/edit/$',
         LoginRequiredCheckIsOwnerUpdateView.as_view(model=Shop, form_class=shopForm),
         name='shop_edit'),
+
+    url(r'^games/(?P<pk>\d+)/reviews/create/$',
+        'igame.views.review',
+        name='review_create'),
     
     url(r'^producers/(?P<pk>\d+)/edit/$',
         LoginRequiredCheckIsOwnerUpdateView.as_view(model=Producer, form_class=producerForm),
@@ -95,6 +98,20 @@ urlpatterns = patterns('',
     url(r'^producers/(?P<pk>\d+)/delete/$',
         producerDelete.as_view(success_url=("/igame/")),
         name='producer_delete'),
-
-
 )
+
+
+#RESTful API
+urlpatterns += patterns('',
+    url(r'^api/games/$', APIGameList.as_view(), name='game-list'),
+    url(r'^api/games/(?P<pk>\d+)/$', APIGameDetail.as_view(), name='game-detail'),
+    url(r'^api/shops/$', login_required(APIShopList.as_view()), name='shop-list'),
+    url(r'^api/shops/(?P<pk>\d+)/$', APIShopDetail.as_view(), name='shop-detail'),
+    url(r'^api/producers/$', login_required(APIProducerList.as_view()), name='producer-list'),
+    url(r'^api/producers/(?P<pk>\d+)/$', APIProducerDetail.as_view(), name='producer-detail'),
+    url(r'^api/gamereviews/$', APIGameReviewList.as_view(), name='gamereview-list'),
+    url(r'^api/gamereviews/(?P<pk>\d+)/$', APIGameReviewDetail.as_view(), name='gamereview-detail'),
+)
+
+# Format suffixes
+urlpatterns = format_suffix_patterns(urlpatterns, allowed=['api' ,'json', 'xml'])

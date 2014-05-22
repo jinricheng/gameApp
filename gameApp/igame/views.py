@@ -12,6 +12,12 @@ from forms import gameForm, shopForm,producerForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied
+from serializers import gameSerializer, shopSerializer,producerSerializer, gameReviewSerializer
+from rest_framework import generics, permissions
+
+
+
+
 
 class LoginRequiredMixin(object):
     @method_decorator(login_required)
@@ -148,5 +154,59 @@ def review(request,pk):
         	game=game)
     	new_review.save()
     	return HttpResponseRedirect(urlresolvers.reverse('igame:game_detail', args=(game.id,)))
-	
 
+
+
+### RESTful API views ###
+
+class IsOwnerOrReadOnly(permissions.BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        # Instance must have an attribute named `owner`.
+        return obj.user == request.user
+
+
+class APIGameList(generics.ListCreateAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    model = Game
+    serializer_class = gameSerializer
+
+class APIGameDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    model = Game
+    serializer_class = gameSerializer
+
+class APIShopList(generics.ListCreateAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    model = Shop
+    serializer_class = shopSerializer
+
+class APIShopDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    model = Shop
+    serializer_class = shopSerializer
+
+class APIProducerList(generics.ListCreateAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    model = Producer
+    serializer_class = producerSerializer
+
+class APIProducerDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    model = Producer
+    serializer_class = producerSerializer
+
+class APIGameReviewList(generics.ListCreateAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    model = gameReview
+    serializer_class = gameReviewSerializer
+
+class APIGameReviewDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    model = gameReview
+    serializer_class = gameReviewSerializer

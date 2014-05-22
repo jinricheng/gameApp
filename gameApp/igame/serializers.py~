@@ -1,0 +1,44 @@
+from rest_framework.fields import CharField
+from rest_framework.relations import HyperlinkedRelatedField, HyperlinkedIdentityField
+from rest_framework.serializers import HyperlinkedModelSerializer
+from models import Game, Shop,Producer, gameReview
+
+
+class gameSerializer(HyperlinkedModelSerializer):
+    url = HyperlinkedIdentityField(view_name='igame:game-detail')
+    soldBy = HyperlinkedRelatedField(many=True, read_only=True, view_name='igame:shop-detail')
+    producedBy = HyperlinkedRelatedField(view_name='igame:producer-detail')
+    gamereview_set = HyperlinkedRelatedField(many=True, read_only=True, view_name='igame:gamereview-detail')
+    user = CharField(read_only=True)
+    class Meta:
+        model = Game
+        fields = ( 'url','name', 'publishYear', 'genre', 'description', 'gameCode', 'date',  'price', 'user','soldBy','producedBy','gamereview_set')
+
+class shopSerializer(HyperlinkedModelSerializer):
+    url = HyperlinkedIdentityField(view_name='igame:shop-detail')
+    soldby = HyperlinkedRelatedField(many=True, read_only=True, view_name='igame:game-detail')
+    user = CharField(read_only=True)
+    class Meta:
+        model = Shop
+        fields = ( 'url','name', 'address', 'cif', 'date', 'user', 'city',
+                  'country', 'soldby')
+
+
+class producerSerializer(HyperlinkedModelSerializer):
+    url = HyperlinkedIdentityField(view_name='igame:producer-detail')
+    producedby = HyperlinkedRelatedField(many=True, read_only=True, view_name='igame:game-detail')
+    user = CharField(read_only=True)
+    class Meta:
+        model = Producer
+        fields = ( 'url','name', 'address', 'nif', 'date', 'user', 'city',
+                  'country', 'producedby')
+
+class gameReviewSerializer(HyperlinkedModelSerializer):
+    url = HyperlinkedIdentityField(view_name='igame:gamereview-detail')
+    game_set = HyperlinkedRelatedField(many=True, read_only=True, view_name='igame:game-detail')
+    user = CharField(read_only=True)
+    class Meta:
+        model = gameReview
+        fields = ( 'url','rating', 'comment', 'user', 'date','game_set')
+
+
