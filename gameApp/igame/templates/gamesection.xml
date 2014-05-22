@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Games>
-	{% for game in games%}
-	<Name>{{game.name}}</Name>
-	{% endfor %}
-</Games>
