@@ -22,6 +22,7 @@
 
 <div id="sidebar">
 	{% block sidebar %}<ul><li><a href="/igame/">Home</a></li></ul>
+			   {% if user.username %}
 			   <h3>Add Section:</h3>
 			   <ul><li><a href = "{% url 'igame:game_create' %}">1.Add Game</a></li></ul>
 			   <ul><li><a href = "{% url 'igame:shop_create' %}">2.Add Shop</a></li></ul>
@@ -30,6 +31,7 @@
 			   <ul><li><a href = "{% url 'igame:game_section' %}">1.Search Game</a></li></ul>
 			   <ul><li><a href = "{% url 'igame:shop_section' %}">2.Search Shop</a></li></ul>
 			   <ul><li><a href = "{% url 'igame:producer_section' %}">3.Search Producer</a></li></ul>
+			   {% endif %}
 	{% endblock %}
 </div>
 
