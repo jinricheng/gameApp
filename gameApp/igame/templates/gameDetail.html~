@@ -1,35 +1,37 @@
 {% extends "mainpage.html" %}
 {% block content %}
-	{% if user.username %}
-	<span vocab="http://schema.org/" typeof="Game">
-	<h1>
-    	<span property="name">{{ game.name }} Details</span>
+{% if user.username %}
+<span vocab="http://schema.org/" typeof="CreativeWork">
+<h1>
+      <span property="name">{{ game.name }} Details</span>
     	{% if user == game.user %}
-        [<a href="{% url 'igame:game_edit' game.id %}">edit</a>]
-	[<a href="{% url 'igame:game_delete' game.id %}">delete</a>]
+        	[<a href="{% url 'igame:game_edit' game.id %}">edit</a>]
+		[<a href="{% url 'igame:game_delete' game.id %}">delete</a>]
     	{% endif %}
-	</h1>
-	<body>
-	<p>Game Name:{{game.name}}<br/>   
-	<br/>PublishYear:{{game.publishYear}}<br/>
-	<br/>Genre:{{game.genre}}<br/>     
+</h1>
+<span vocab="http://schema.org/" typeof="CreativeWork">
+<p>	
+	<span property="name">Game Name:{{game.name}}</span><br/>   
+	<br/><span property="datePublished">PublishYear:{{game.publishYear}}</span><br/>
+	<br/><span property="genre">Genre:{{game.genre}}</span><br/>     
 	<br/>GameCode:{{game.gameCode}}<br/>  
 	<br/>Price:{{game.price}}Euros<br/>
-	</p>Description:{{game.description}}</p>
-	</p> CreatedBy User: {{game.user}}</p>
-	</p> GameProducer: <a href = "{% url 'igame:producer_detail' game.producedBy.id %}">{{game.producedBy}}</a></p>
+	<br/><span property="description">Description:{{game.description}}</span><br/>
+	<br/><span property="author"> CreatedBy User: {{game.user}}</span><br/>
+	<br/><span property="publisher">GameProducer: <a href = "{% url 'igame:producer_detail' game.producedBy.id %}">{{game.producedBy}}</a></span>
+</p>
 
-	<h2>Reviews</h2>
-	{% if game.gamereview_set.all|length > 0 %}
-	<span rel="aggregateRating">
+<h2>Reviews</h2>
+{% if game.gamereview_set.all|length > 0 %}
+<span rel="aggregateRating">
     	<p typeof="AggregateRating">
         	Average rating <span property="ratingValue">{{ game.averageRating|stringformat:".1f" }}</span>
         	{% with game.gamereview_set.all|length as reviewCount %}
         	from <span property="reviewCount">{{ reviewCount }}</span> review{{ reviewCount|pluralize }}
         	{% endwith %}
     	</p>
-	</span>
-	<ul rel="review">
+</span>
+<ul rel="review">
     	{% for review in game.gamereview_set.all %}
        	<li typeof="Review">
             <p rel="reviewRating" typeof="Rating">
@@ -44,34 +46,40 @@
                 <span property="publishDate">{{ review.date}}</span></p>
         </li>
     	{% endfor %}
-	</ul>
-	{% else %} <p>Sorry,this game no has reviews, add one please!</p>{% endif %}
+</ul>
+	{% else %} <p>Sorry,this game no has reviews, add one please!</p>
+{% endif %}
 
-	<h2>Add Review</h2>
-	<form action="{% url 'igame:review_create' game.id %}" method="post">
-    		{% csrf_token %}
-    		Message: <textarea name='comment' id='comment' rows="4"></textarea>
-    		<p>Rating:</p>
-    		<p>
+<h2>Add Review</h2>
+<form action="{% url 'igame:review_create' game.id %}" method="post">
+    	{% csrf_token %}
+    	Message: <textarea name="comment" id="comment" rows="4"></textarea>
+    	<p>Rating:</p>
+    	<p>
     		{% for rate in RATING_CHOICES %}
         	<input type="radio" name="rating" id="rating{{ forloop.counter }}" value="{{ rate.1 }}" />
        		<label for="choice{{ forloop.counter }}">{{ rate.1 }} star{{ rate.0|pluralize }}</label><br />
     		{% endfor %}
-    		</p>
-    		<input type="submit" value="Review" />
-	</form>
+    	</p>
+    	<input type="submit" value="Review" />
+</form>
 	<br/> 
-	<h3>Shops:(<a href="{% url 'igame:shop_create' %}">Add</a>)</h3>
-	<ul>
-		{% for shop in game.soldBy.all %}
-			<li>
-			<a href = "{% url 'igame:shop_detail' shop.id %}">{{shop.name}}
-			</li>
-		{% empty %}<li>Sorry,we can not find the shop!</li>
-		{% endfor %}
-	</ul>
-	</body>
-	{% else %}<p>You must sign in to use the game application</p>{% endif %}
-
 	
+<h3>Shops:(<a href="{% url 'igame:shop_create' %}">Add</a>)</h3>
+
+	{% for shop in game.soldBy.all %}
+	<li>
+		<a href = "{% url 'igame:shop_detail' shop.id %}">{{shop.name}}
+	</li>
+	{% empty %}<p>Sorry,we can not find the shop!</p>
+	{% endfor %}
+{% else %}
+<p>
+	You must sign in to use the game application
+</p>
+{% endif %}	
 {% endblock %}
+
+{% block footer %}
+    Created by {{ game.user }} on {{ game.date }}
+{% endblock %} 

@@ -58,7 +58,7 @@ class Game(models.Model):
 
 
 class Review(models.Model):
-	RATING_CHOICES = ((1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5'),(6,'6'),(7,'7'),(8,'8'),(9,'9'),(10,'10'))
+	RATING_CHOICES = ((1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5'))
 	rating = models.PositiveSmallIntegerField('Rating(stars)',blank=False,default = 5,choices=RATING_CHOICES)
 	comment = models.TextField(blank = True, null = True)
 	user = models.ForeignKey(User,default = get_default_user)

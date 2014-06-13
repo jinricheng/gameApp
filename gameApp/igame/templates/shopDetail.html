@@ -1,7 +1,7 @@
 {% extends "mainpage.html" %}
 {% block content %}
-	{% if user.username %}
-	<span vocab="http://schema.org/" typeof="Shop">
+{% if user.username %}
+<span vocab="http://schema.org/" typeof="Place">
 	<h1>
     	<span property="name">{{ shop.name }} Details</span>
     	{% if user == shop.user %}
@@ -9,23 +9,26 @@
 	[<a href="{% url 'igame:shop_delete' shop.id %}">delete</a>]
     	{% endif %}
 	</h1>
-	<p>Shop Name:{{shop.name}}<br/>   
+	<p><span property="name">Shop Name:{{shop.name}}</span><br/>   
 	<br/>Cif:{{shop.cif}}<br/>
-	<br/>Address:{{shop.address}}<br/>     
-	<br/>City:{{shop.city}}<br/>  
+	<br/><span property="address">Address:{{shop.address}}</span><br/>     
+	<br/>City:{{shop.city}}<br/>
 	<br/>Country:{{shop.country}}<br/>
-	</p> CreatedBy User: {{shop.user}}</p>
+
+
+	</p><div property="author" typeof="CreativeWork"> CreatedBy User: {{shop.user}}</div></p>
 	<br/>
 	<h3>
 	Games Avaliables:(<a href="{% url 'igame:game_create' %}">Add New Game</a>)</h3>
 	<ul>
 	{% for game in shop.soldby.all %}
 	<li>
-	<a href =  "{% url 'igame:game_detail' game.id %}">{{game.name}}</a>
+	<div property="name" typeof="CreativeWork"><a href =  "{% url 'igame:game_detail' game.id %}">{{game.name}}</a></div>
 	</li>
 	{% empty %}<li>Sorry,we can not find any game in this shop!</li>
 	{% endfor %}
 	</ul>
+</span>
 	</body>
 	{% else %}<p>You must sign in to use the game application</p>{% endif %}
 {% endblock %}

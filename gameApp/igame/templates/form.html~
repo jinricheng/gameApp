@@ -26,7 +26,7 @@
                                 return {
                                     label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,
                                     value: item.name,
-                                    stateOrProvince: item.adminName1,
+                                    city: item.adminName1,
                                     countryName: item.countryName
                                 }
                             }));
@@ -38,7 +38,6 @@
                     if (ui.item) {
                         $("#id_city").val(ui.item.stateOrProvince);
                         $("#id_country").val(ui.item.countryName);
-                        $("#id_zipCode").val("");
                     }
                 }
             });

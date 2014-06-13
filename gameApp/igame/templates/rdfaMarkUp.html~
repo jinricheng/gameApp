@@ -1,0 +1,114 @@
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <link rel="stylesheet" href="{% static "style/base.css" %}" />
+    <title>MyGameApplication.org</title>
+</head>
+
+<body>
+<div id="header">
+            <p>User jinricheng (<a href="/accounts/logout/?next=/igame/">logout</a>)</p>
+</div>
+
+<div id="siderbar">
+            <ul>
+		<li><a href="/">Home</a></li>
+	    </ul>
+</div>
+
+<div id="content">
+<span vocab="http://schema.org/" typeof="CreativeWork">
+<h1>
+    	<span property="name">FIFA2014 Details</span>
+        	[<a href="/igame/games/1/edit/">edit</a>]
+		[<a href="/igame/games/1/delete/">delete</a>]
+    
+</h1>
+
+<span vocab="http://schema.org/" typeof="CreativeWork">
+<p>
+	<span property="name">Game Name:FIFA2014</span><br/>   
+	<br/><span property="datePublished">PublishYear:2013</span><br/>
+	<br/><span property="genre">Genre:Sport</span><br/>     
+	<br/>GameCode:W2344322<br/>  
+	<br/>Price:42Euros<br/>
+	<br/><span property="description">Description:A good SportGame with Great image</span><br/>
+	<br/><span property="author">CreatedBy User: jinricheng</span> <br/>
+	<br/><span property="publisher">GameProducer: <a href = "/igame/producers/2/">EASport</a></span>
+</p>
+
+<h2>Reviews</h2>
+<span rel="aggregateRating">
+	<p typeof="AggregateRating">
+		Average rating <span property="ratingValue">4.7</span>
+		from <span property="reviewCount">3</span> reviews
+	</p>
+</span>
+<ul rel="review">
+       	<li typeof="Review">
+           <p rel="reviewRating" typeof="Rating">
+                <span property="worstRating" content="1"></span>
+                <span property="ratingValue">5</span> stars
+                <span property="bestRating" content="5"></span>
+           </p>
+           <p property="description">very interesting game, I'm enjoying it</p>
+           <p>Created by <span property="author">jinricheng</span> on
+                <span property="publishDate">May 17,2014 </span></p>
+        </li>
+    	<li typeof="Review">
+           <p rel="reviewRating" typeof="Rating">
+                <span property="worstRating" content="1"></span>
+                <span property="ratingValue">4</span> stars
+                <span property="bestRating" content="5"></span>
+           </p>
+           <p property="description">It's Ok, but it could be better,such as the IA</p>
+           <p>Created by <span property="author">Pepito</span> on
+                <span property="publishDate">May 18,2014 </span></p>
+        </li>
+	<li typeof="Review">
+           <p rel="reviewRating" typeof="Rating">
+                <span property="worstRating" content="1"></span>
+                <span property="ratingValue">4</span> stars
+                <span property="bestRating" content="5"></span>
+           </p>
+           <p property="description">good game, also there are some aspects to improve</p>
+           <p>Created by <span property="author">Juan</span> on
+                <span property="publishDate">May 21,2014 </span></p>
+        </li>
+</ul>
+</span>
+<h2>Add Review</h2>
+<form action="/igame/games/1/reviews/create/" method="post">
+    		<input type='hidden' name='csrfmiddlewaretoken' value='Tv06LVn4oRZceUIGVpkN7RfBwhdxKyYb' />
+    		Message: <textarea name="comment" id="comment" rows="4"></textarea>
+    		<p>Rating:</p>
+    		<p>
+        		<input type="radio" name="rating" id="rating1" value="1" />
+       			<label for="choice1">1 star</label><br />
+			<input type="radio" name="rating" id="rating2" value="2" />
+       			<label for="choice2">2 stars</label><br />
+			<input type="radio" name="rating" id="rating3" value="3" />
+       			<label for="choice3">3 stars</label><br />
+			<input type="radio" name="rating" id="rating4" value="4" />
+       			<label for="choice4">4 stars</label><br />
+			<input type="radio" name="rating" id="rating5" value="5" />
+       			<label for="choice5">5 stars</label><br />
+    		</p>
+    		<input type="submit" value="Review" />
+</form>
+
+<h3>
+	Shops:
+		(<a href="/igame/shops/create/">Add</a>)
+</h3>
+<ul>
+	<li><a href = "/igame/shops/1/">GameShop</li>
+</ul>
+	
+</div>	
+</body>
+</html>
+
+
