@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Producer>
-	<ProducerName>{{producer.name}}</ProducerName>
-	<Address>{{producer.address}}</Address>
-</Shop>
